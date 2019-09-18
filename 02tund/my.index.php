@@ -7,6 +7,7 @@
  if($hourNow < 8){
   $partOfDay = "hommik";
  }
+
 ?>
 <!DOCTYPE html>
 <html lang="et">
