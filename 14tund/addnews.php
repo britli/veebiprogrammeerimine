@@ -30,20 +30,37 @@
 	$news = "";
 	$expiredate = date("Y-m-d");
   
-  
-  if(isset($_POST["newsBtn"])){
-	$notice = storeNews($_POST["newsTitle"], $_POST["newsEditor"], $_POST["expiredate"]);
-	if(!empty($_POST["newsTitle"])){
-	  $myDescription = $_POST["newsTitle"];
+   //kas vajutati mõtte salvestamise nuppu
+	if(isset($_POST["newsBtn"])){
+		//var_dump($_POST);
+		if(strlen($_POST["newsTitle"]) == 0){
+			$error .= "Uudise pealkiri on puudu!";
+		}
+		if(strlen($_POST["newsEditor"]) == 0){
+			$error .= "Uudise sisu on puudu! ";
+		}
+		if($_POST["expiredate"] >= $expiredate){
+			//echo "TULEVIKUS";
+			$expiredate = $_POST["expiredate"];
+		}
+		
+		$newsTitle = test_input($_POST["newsTitle"]);
+		$news = test_input($_POST["newsEditor"]);
+		if($error == ""){
+			/*$notice = "Uudis salvestatud!";
+			$error = $notice;
+			echo $_POST["expiredate"];*/
+			$result = saveNews($newsTitle, $news, $expiredate);
+			if($result == 1){
+				$notice = "Uudis salvestatud!";
+				$error = "";
+				$newsTitle = "";
+				$news = "";
+				$expiredate = date("Y-m-d");
+			}
+		}
 	}
-	$_SESSION["newsEditor"] = $_POST["newsEditor"];
-	$_SESSION["expiredate"] = $_POST["expiredate"];
-  } else {
-	$myProfileDesc = showMyDesc();
-	if($myContent != ""){
-	  $myContent = $myProfileContent;
-    }
-  }
+  
   
   $contentHTML = readMyContent();
   
